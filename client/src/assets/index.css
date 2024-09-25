@@ -133,6 +133,7 @@ button:disabled {
   color: #fff;
   padding: 0;
   cursor: pointer;
+  color: black;
 }
 
 form {

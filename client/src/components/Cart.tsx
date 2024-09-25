@@ -1,53 +1,37 @@
-const Item = () => {
-  <tr>
-    <td>Amazon Kindle E-reader</td>
-    <td>2</td>
-    <td>$79.99</td>
-  </tr>
+import { Item as ItemType } from '../types/index'
+import Item from './Item'
+import CheckoutButton from './CheckoutButton'
+
+interface CartProps {
+  items: ItemType[]
 }
 
-const CartItems = () => {
-  <table className="cart-items">
-    <thead>
-      <tr>
-        <th scope="col">Item</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      <Item />
-      <Item />
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colSpan="3" class="total">Total: $729.98</td>
-      </tr>
-    </tfoot>
-   </table>
-}
-
-const Total = () => {
-  <tfoot>
-    <tr>
-      <td colSpan="3" class="total">Total: $729.98</td>
-    </tr>
-  </tfoot>
-}
-
-const Checkout = () => {
-  <div className="checkout-button">
-    <button className="checkout">Checkout</button>
-  </div>
-}
-
-const Cart = () => {
+const Cart = ({ items }: CartProps) => {
   return (
-    <div>
+    <div className='cart'>
       <h2>Your Cart</h2>
-        <CartItems />
-        <Total />
-        <Checkout />
+      <table className="cart-items">
+        <thead>
+          <tr>
+            <th scope="col">Item</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map(item => {
+            return (
+              <Item quantity={item.quantity} price={item.price} title={item.title}/>
+            )
+          })}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={3} className="total">Total: $729.98</td>
+          </tr>
+        </tfoot>
+      </table>
+      <CheckoutButton />
     </div>
   )
 }

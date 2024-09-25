@@ -1,11 +1,29 @@
 import Cart from './Cart'
+import NoItemCart from './NoItemCart';
 
 const ShopHeader = () => {
+  const mockCart = [
+    {
+      _id: "1",
+      title: "Amazon Kindle E-reader",
+      quantity: '1',
+      price: '79.99',
+    },
+    {
+      _id: "2",
+      title: "Apple 10.5-Inch iPad Pro",
+      quantity: '3',
+      price: '649.99',
+    },
+  ];
+
+  const items = []
+
   return (
-    <>
+    <header>
       <h1>The Shop!</h1>
-      <Cart />
-    </>
+      {items.length > 1 ? <Cart items={mockCart} /> : <NoItemCart/> }
+    </header>
   )
 }
 
