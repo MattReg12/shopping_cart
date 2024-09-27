@@ -5,11 +5,28 @@ import * as productService from '../services/products'
 import { Item } from "../types"
 
 const ProductListing = () => {
-  const [addFormClicked, setAddFormClicked] = React.useState<boolean>(false)
+  const [showForm, setShowForm] = React.useState<boolean>(false)
   const [products, setProducts] = React.useState<Item[]>([])
 
-  const clickHandler = function() {
-    setAddFormClicked(!addFormClicked)
+  const handleToggleForm = function() {
+    setShowForm(!showForm)
+  }
+
+  const handleEditProduct = function(item: Item) {
+    const itemIndex: number = products.findIndex(product => product.id == item.id)
+    const newProducts = [...products]
+    if (itemIndex !== -1) {
+      newProducts[itemIndex] = item
+      setProducts(newProducts)
+    }
+  }
+
+  const handleDeleteProduct = async function(id: string) {
+    await productService.deleteProduct(id)
+    const itemIndex: number = products.findIndex(product => product.id == id)
+    const newProducts = [...products]
+    newProducts.splice(itemIndex, 1)
+    setProducts(newProducts)
   }
 
   React.useEffect(() => {
@@ -25,12 +42,12 @@ const ProductListing = () => {
     <main>
       <div className='product-listing'>
         <h2>Products</h2>
-        <ProductList products={products}/>
+        <ProductList onEdit={handleEditProduct} products={products} onDelete={handleDeleteProduct}/>
       </div>
       <p>
-        <button onClick={clickHandler} className="add-product-button">Add A Product</button>
+        <button onClick={handleToggleForm} className="add-product-button">Add A Product</button>
       </p>
-      {addFormClicked && <AddForm onCancel={clickHandler} setProducts={setProducts}/>}
+      {showForm && <AddForm onCancel={handleToggleForm} setProducts={setProducts}/>}
     </main>
   )
 }

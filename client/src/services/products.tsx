@@ -28,8 +28,8 @@ export const updateProduct = async (id: string, title: string, price: string, qu
   try {
     const response = await axios.put(productsUrl + `/${id}`, {
       title: title,
-      price: price,
-      quantity: quantity
+      price: +price,
+      quantity: +quantity
     })
     
     return response.data
@@ -38,26 +38,24 @@ export const updateProduct = async (id: string, title: string, price: string, qu
   }
 }
 
+export const deleteProduct = async (id: string) => {
+  try {
+    await axios.delete(productsUrl + `/${id}`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+
 // BACK END ROUTES
 
-// router.put("/products/:id", (req, res) => {
+// router.delete("/products/:id", (req, res, next) => {
 //   const productId = req.params.id;
-//   const { title, price, quantity } = req.body;
-//   Product.findById(productId)
-//     .then((product) => {
-//       return Product.findByIdAndUpdate(
-//         productId,
-//         {
-//           title: title || product.title,
-//           price: price === undefined ? product.price : price,
-//           quantity: quantity === undefined ? product.quantity : quantity,
-//         },
-//         { new: true }
-//       );
+//   Product.findByIdAndRemove(productId)
+//     .then(() => {
+//       res.json();
 //     })
-//     .then((updatedProduct) => {
-//       res.json(updatedProduct);
-//     });
+//     .catch((err) => next(err));
 // });
 
 // FRONT END EXAMPLE

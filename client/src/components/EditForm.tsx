@@ -1,21 +1,47 @@
 import { Item } from "../types";
+import React from "react";
+import * as productService from '../services/products'
 
 interface EditFormProps {
   onHandleCancel: () => void; 
   item: Item
+  onEdit: (item:Item) => void
 }
 
-const EditForm = function({ item, onHandleCancel }: EditFormProps)  {
+const EditForm = function({ onEdit, item, onHandleCancel }: EditFormProps)  {
+  const [title, setTitle] = React.useState(item.title)
+  const [price, setPrice] = React.useState(item.price)
+  const [quantity, setQuantity] = React.useState(item.quantity)
+  
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
+  }
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrice(e.target.value)
+  }
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuantity(e.target.value)
+  }
+  
+  const handleSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    const newItem = await productService.updateProduct(item._id as string, title, price, quantity)
+    onEdit(newItem)
+  }
+
   return (
     <div className="edit-form">
       <h3>Edit Product</h3>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="input-group">
           <label htmlFor="product-name">Product Name</label>
           <input
             type="text"
             id="product-name"
-            value={item.title}
+            value={title}
+            onChange={handleTitleChange}
             aria-label="Product Name"
           />
         </div>
@@ -25,7 +51,8 @@ const EditForm = function({ item, onHandleCancel }: EditFormProps)  {
           <input
             type="number"
             id="product-price"
-            value={item.price}
+            value={price}
+            onChange={handlePriceChange}
             aria-label="Product Price"
           />
         </div>
@@ -35,7 +62,8 @@ const EditForm = function({ item, onHandleCancel }: EditFormProps)  {
           <input
             type="number"
             id="product-quantity"
-            value={item.quantity}
+            value={quantity}
+            onChange={handleQuantityChange}
             aria-label="Product Quantity"
           />
         </div>
