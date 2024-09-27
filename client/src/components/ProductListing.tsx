@@ -1,18 +1,25 @@
 import React from "react"
 import ProductList from "./ProductList"
-import { Item } from "../types"
 import AddForm from "./AddForm"
+import * as productService from '../services/products'
+import { Item } from "../types"
 
-interface ProductListingProp {
-  products: Item[]
-}
-
-const ProductListing = ({products}: ProductListingProp) => {
-  const [addFormClicked, setAddFormClicked] = React.useState(false)
+const ProductListing = () => {
+  const [addFormClicked, setAddFormClicked] = React.useState<boolean>(false)
+  const [products, setProducts] = React.useState<Item[]>([])
 
   const clickHandler = function() {
     setAddFormClicked(!addFormClicked)
   }
+
+  React.useEffect(() => {
+    const getProducts = async function() {
+      const products = await productService.fetchProducts()
+      setProducts(products)
+    }
+
+    getProducts()
+  }, [])
 
   return (
     <main>
@@ -23,7 +30,7 @@ const ProductListing = ({products}: ProductListingProp) => {
       <p>
         <button onClick={clickHandler} className="add-product-button">Add A Product</button>
       </p>
-      {addFormClicked && <AddForm onCancel={clickHandler}/>}
+      {addFormClicked && <AddForm onCancel={clickHandler} setProducts={setProducts}/>}
     </main>
   )
 }

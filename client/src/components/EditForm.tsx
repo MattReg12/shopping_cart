@@ -1,4 +1,11 @@
-const EditForm = function() {
+import { Item } from "../types";
+
+interface EditFormProps {
+  onHandleCancel: () => void; 
+  item: Item
+}
+
+const EditForm = function({ item, onHandleCancel }: EditFormProps)  {
   return (
     <div className="edit-form">
       <h3>Edit Product</h3>
@@ -8,7 +15,7 @@ const EditForm = function() {
           <input
             type="text"
             id="product-name"
-            value="Apple 10.5-Inch iPad Pro"
+            value={item.title}
             aria-label="Product Name"
           />
         </div>
@@ -18,7 +25,7 @@ const EditForm = function() {
           <input
             type="number"
             id="product-price"
-            value="649.99"
+            value={item.price}
             aria-label="Product Price"
           />
         </div>
@@ -28,14 +35,14 @@ const EditForm = function() {
           <input
             type="number"
             id="product-quantity"
-            value="2"
+            value={item.quantity}
             aria-label="Product Quantity"
           />
         </div>
 
         <div className="actions form-actions">
           <button type="submit">Update</button>
-          <button type="button">Cancel</button>
+          <button type="button" onClick={onHandleCancel}>Cancel</button>
         </div>
       </form>
     </div>

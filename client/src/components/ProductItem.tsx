@@ -1,11 +1,18 @@
 import { Item } from "../types"
 import EditForm from "./EditForm"
-
+import React from "react"
+ 
 interface ProductItemProp {
   item: Item
 }
 
 const ProductItem = function({item}: ProductItemProp) {
+  const [editClicked, setEditClicked] = React.useState(false)
+
+  const handleClick = () => {
+    setEditClicked(!editClicked)
+  }
+
   return (
     <li className="product">
       <div className="product-details">
@@ -14,11 +21,11 @@ const ProductItem = function({item}: ProductItemProp) {
         <p className="quantity">{item.quantity}</p>
         <div className="actions product-actions">
           <button className="add-to-cart">Add to Cart</button>
-          <button className="edit">Edit</button>
+          <button className="edit" onClick={handleClick}>Edit</button>
         </div>
         <button className="delete-button"><span>X</span></button>
       </div>
-      <EditForm />
+      {editClicked && <EditForm item={item} onHandleCancel={handleClick}/>}
     </li>
   )
 }
