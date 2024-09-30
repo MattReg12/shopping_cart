@@ -1,4 +1,3 @@
-import './App.css'
 import ShopHeader from './components/ShopHeader'
 import './components/ProductList'
 import ProductListing from './components/ProductListing'

@@ -4,13 +4,19 @@ import React from "react"
  
 interface ProductItemProp {
   item: Item
+  onEdit: (item:Item) => void
+  onDelete: (id:string) => void
 }
 
-const ProductItem = function({item}: ProductItemProp) {
-  const [editClicked, setEditClicked] = React.useState(false)
+const ProductItem = function({onEdit, onDelete, item}: ProductItemProp) {
+  const [showForm, setShowForm] = React.useState(false)
 
-  const handleClick = () => {
-    setEditClicked(!editClicked)
+  const handleShowForm = () => {
+    setShowForm(!showForm)
+  }
+
+  const handleDelete = async () => {
+    onDelete(item._id as string)
   }
 
   return (
@@ -21,11 +27,11 @@ const ProductItem = function({item}: ProductItemProp) {
         <p className="quantity">{item.quantity}</p>
         <div className="actions product-actions">
           <button className="add-to-cart">Add to Cart</button>
-          <button className="edit" onClick={handleClick}>Edit</button>
+          <button className="edit" onClick={handleShowForm}>Edit</button>
         </div>
-        <button className="delete-button"><span>X</span></button>
+        <button className="delete-button" onClick={handleDelete}><span>X</span></button>
       </div>
-      {editClicked && <EditForm item={item} onHandleCancel={handleClick}/>}
+      {showForm && <EditForm onEdit={onEdit} item={item} onHandleCancel={handleShowForm}/>}
     </li>
   )
 }
